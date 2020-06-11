@@ -1,0 +1,19 @@
+dist: xenial
+language: go
+go:
+- 1.14.x
+
+env:
+  global:
+  - DEBUG=true
+
+before_install:
+- export REPOSITORY_ROOT=${TRAVIS_BUILD_DIR}
+
+install: make install_dependencies
+
+script:
+- make test
+
+after_success:
+- bash <(curl -s https://codecov.io/bash)
