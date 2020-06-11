@@ -14,7 +14,7 @@ var (
 )
 
 func TestStore(t *testing.T) {
-	f, err := ioutil.TempFile("", "store_test")
+	f, err := ioutil.TempFile(os.TempDir(), "store_test")
 	require.NoError(t, err)
 	defer os.Remove(f.Name())
 
