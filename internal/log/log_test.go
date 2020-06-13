@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
+	api "github.com/weak-head/proglog/api/v1"
 )
 
 func TestLog(t *testing.T) {
@@ -32,13 +33,41 @@ func TestLog(t *testing.T) {
 }
 
 func testAppendRead(t *testing.T, log *Log) {
+	append := &api.Record{
+		Value: []byte("Hello World"),
+	}
 
+	off, err := log.Append(append)
+	require.NoError(t, err)
+	require.Equal(t, uint64(0), off)
+
+	read, err := log.Read(off)
+	require.NoError(t, err)
+	require.Equal(t, append, read)
 }
 
 func testOutOfRangeErr(t *testing.T, log *Log) {
-
+	read, err := log.Read(1001)
+	require.Error(t, err)
+	require.Nil(t, read)
 }
 
 func testInitExisting(t *testing.T, log *Log) {
+	append := &api.Record{
+		Value: []byte("Hello World"),
+	}
 
+	for i := 0; i < 3; i++ {
+		off, err := log.Append(append)
+		require.NoError(t, err)
+		require.Equal(t, uint64(i), off)
+	}
+	require.NoError(t, log.Close())
+
+	n, err := NewLog(log.Dir, log.Config)
+	require.NoError(t, err)
+
+	off, err := n.Append(append)
+	require.NoError(t, err)
+	require.Equal(t, uint64(3), off)
 }
