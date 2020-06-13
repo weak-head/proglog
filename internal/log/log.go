@@ -95,7 +95,7 @@ func (l *Log) Read(off uint64) (*api.Record, error) {
 
 	var s *segment
 	for _, segment := range l.segments {
-		if segment.baseOffset <= off {
+		if segment.baseOffset <= off && off < segment.nextOffset {
 			s = segment
 			break
 		}
