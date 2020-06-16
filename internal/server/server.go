@@ -4,17 +4,33 @@ import (
 	"context"
 
 	api "github.com/weak-head/proglog/api/v1"
-	log "github.com/weak-head/proglog/internal/log"
+	"google.golang.org/grpc"
 )
 
 var _ api.LogServer = (*grpcServer)(nil)
 
 type Config struct {
-	CommitLog log.Log
+	CommitLog CommitLog
 }
 
 type grpcServer struct {
 	*Config
+}
+
+type CommitLog interface {
+	Append(*api.Record) (uint64, error)
+	Read(uint64) (*api.Record, error)
+}
+
+func NewGRPCServer(config *Config) (*grpc.Server, error) {
+	gsrv := grpc.NewServer()
+	srv, err := newgrpcServer(config)
+	if err != nil {
+		return nil, err
+	}
+
+	api.RegisterLogServer(gsrv, srv)
+	return gsrv, nil
 }
 
 func newgrpcServer(c *Config) (*grpcServer, error) {
