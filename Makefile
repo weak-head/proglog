@@ -1,5 +1,29 @@
+CONFIG_PATH=${HOME}/.proglog/
 
-.PHONY : install_dependencies
+.PHONY: init
+init:
+	mkdir -p ${CONFIG_PATH}
+
+.PHONY: gencert
+gencert: init
+	# Delete old certificates
+	rm -f ${CONFIG_PATH}/*.csr ${CONFIG_PATH}/*.pem
+
+	# Generate root CA
+	cfssl gencert \
+		-initca test/ca-csr.json | cfssljson -bare ca
+
+	# Generate server certificate
+	cfssl gencert \
+		-ca=ca.pem \
+		-ca-key=ca-key.pem \
+		-config=test/ca-config.json \
+		-profile=server \
+		test/server-csr.json | cfssljson -bare server
+
+	mv *.pem *.csr ${CONFIG_PATH}
+
+.PHONY: install_dependencies
 install_dependencies: get
 
 .PHONY: get
@@ -26,4 +50,4 @@ test:
 
 .PHONY: test_no_cov
 test_no_cov:
-	go test ./...
+	go test -race ./...
