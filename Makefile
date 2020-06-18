@@ -1,5 +1,11 @@
 CONFIG_PATH=${HOME}/.proglog/
 
+ACL_MODEL=acl-model.conf
+ACL_POLICY=acl-policy.csv
+
+TEST_COVERAGE_TEMP=profile.out
+TEST_COVERAGE=coverage.txt
+
 .PHONY: init
 init:
 	mkdir -p ${CONFIG_PATH}
@@ -8,6 +14,25 @@ init:
 clean:
 	# Delete old certificates
 	rm -f ${CONFIG_PATH}/*.csr ${CONFIG_PATH}/*.pem
+
+	# Delete old ACL model and policy
+	rm -f ${CONFIG_PATH}/${ACL_MODEL}
+	rm -f ${CONFIG_PATH}/${ACL_POLICY}
+
+.PHONY: get
+get:
+	go get -t -v ./...
+
+.PHONY: install_dependencies
+install_dependencies: get
+	go get github.com/cloudflare/cfssl/cmd/cfssl
+	go get github.com/cloudflare/cfssl/cmd/cfssljson
+
+.PHONY: copy_acl
+copy_acl: init clean
+	# Copy ACL model and policy
+	cp test/${ACL_MODEL} ${CONFIG_PATH}/${ACL_MODEL}
+	cp test/${ACL_POLICY} ${CONFIG_PATH}/${ACL_POLICY}
 
 .PHONY: gencert
 gencert: init clean
@@ -43,15 +68,6 @@ gencert: init clean
 
 	mv *.pem *.csr ${CONFIG_PATH}
 
-.PHONY: install_dependencies
-install_dependencies: get
-	go get github.com/cloudflare/cfssl/cmd/cfssl
-	go get github.com/cloudflare/cfssl/cmd/cfssljson
-
-.PHONY: get
-get:
-	go get -t -v ./...
-
 .PHONY: compile
 compile:
 	protoc api/v1/*.proto \
@@ -60,13 +76,21 @@ compile:
 		--proto_path=.
 
 .PHONY: test
-test: gencert
-	echo "" > coverage.txt
+test: gencert copy_acl
+	# Run tests generating coverage report
+	echo "" > ${TEST_COVERAGE}
 	for d in `go list ./...`; do \
-		go test -p 1 -v -timeout 240s -race -coverprofile=profile.out -covermode=atomic $$d || exit 1; \
-		if [ -f profile.out ]; then \
-			cat profile.out >> coverage.txt; \
-			rm profile.out; \
+		go test \
+			-p 1 \
+			-v \
+			-timeout 240s \
+			-race \
+			-coverprofile=${TEST_COVERAGE_TEMP} \
+			-covermode=atomic \
+			$$d || exit 1; \
+		if [ -f ${TEST_COVERAGE_TEMP} ]; then \
+			cat ${TEST_COVERAGE_TEMP} >> ${TEST_COVERAGE}; \
+			rm ${TEST_COVERAGE_TEMP}; \
 		fi \
 	done
 

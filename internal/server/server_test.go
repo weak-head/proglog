@@ -19,7 +19,7 @@ import (
 func TestServer(t *testing.T) {
 	for scenario, fn := range map[string]func(
 		t *testing.T,
-		client api.LogClient,
+		rootClient, nobodyClient api.LogClient,
 		config *Config,
 	){
 		"produce/consume a message to/from the log succeeds": testProduceConsume,
@@ -27,9 +27,9 @@ func TestServer(t *testing.T) {
 		"consume past log boundary fails":                    testConsumePastBoundary,
 	} {
 		t.Run(scenario, func(t *testing.T) {
-			rootClient, _, config, teardown := testSetup(t, nil)
+			rootClient, nobodyClient, config, teardown := testSetup(t, nil)
 			defer teardown()
-			fn(t, rootClient, config)
+			fn(t, rootClient, nobodyClient, config)
 		})
 	}
 }
@@ -127,7 +127,7 @@ func testSetup(t *testing.T, fn func(*Config)) (
 
 func testProduceConsume(
 	t *testing.T,
-	client api.LogClient,
+	client, _ api.LogClient,
 	config *Config,
 ) {
 	ctx := context.Background()
@@ -152,7 +152,7 @@ func testProduceConsume(
 
 func testProduceConsumeStream(
 	t *testing.T,
-	client api.LogClient,
+	client, _ api.LogClient,
 	config *Config,
 ) {
 	ctx := context.Background()
@@ -202,7 +202,7 @@ func testProduceConsumeStream(
 
 func testConsumePastBoundary(
 	t *testing.T,
-	client api.LogClient,
+	client, _ api.LogClient,
 	config *Config,
 ) {
 	ctx := context.Background()

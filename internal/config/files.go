@@ -27,6 +27,11 @@ var (
 	// NobodyClientKeyFile defines the path to the Client private key
 	// with 'nobody' level access
 	NobodyClientKeyFile = configFile("nobody-client-key.pem")
+
+	// ACLModelFile defines the path to the the ACL model
+	ACLModelFile = configFile("acl-model.conf")
+	// ACLPolicyFile defines the path to the ACL policy
+	ACLPolicyFile = configFile("acl-policy.csv")
 )
 
 const (
