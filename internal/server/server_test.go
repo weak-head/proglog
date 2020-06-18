@@ -44,9 +44,12 @@ func testSetup(t *testing.T, fn func(*Config)) (
 	l, err := net.Listen("tcp", "127.0.0.1:0")
 	require.NoError(t, err)
 
+	// Configure Client TLS
 	clientTLSConfig, err := config.SetupTLSConfig(
 		config.TLSConfig{
-			CAFile: config.CAFile,
+			CertFile: config.ClientCertFile,
+			KeyFile:  config.ClientKeyFile,
+			CAFile:   config.CAFile,
 		})
 	require.NoError(t, err)
 
@@ -59,15 +62,18 @@ func testSetup(t *testing.T, fn func(*Config)) (
 
 	client = api.NewLogClient(cc)
 
+	// Configure Server TLS
 	serverTLSConfig, err := config.SetupTLSConfig(config.TLSConfig{
 		CertFile:      config.ServerCertFile,
 		KeyFile:       config.ServerKeyFile,
 		CAFile:        config.CAFile,
 		ServerAddress: l.Addr().String(),
+		Server:        true,
 	})
 	require.NoError(t, err)
 	serverCreds := credentials.NewTLS(serverTLSConfig)
 
+	// Configure write-ahead log
 	dir, err := ioutil.TempDir(os.TempDir(), "server_test")
 	require.NoError(t, err)
 
@@ -81,6 +87,7 @@ func testSetup(t *testing.T, fn func(*Config)) (
 		fn(cfg)
 	}
 
+	// gRPC server
 	server, err := NewGRPCServer(cfg, grpc.Creds(serverCreds))
 	require.NoError(t, err)
 
@@ -93,7 +100,6 @@ func testSetup(t *testing.T, fn func(*Config)) (
 		cc.Close()
 		l.Close()
 	}
-
 }
 
 func testProduceConsume(

@@ -6,12 +6,18 @@ import (
 )
 
 var (
-	// CAFile defines the path to CA certificate
+	// CAFile defines the path to the CA certificate
 	CAFile = configFile("ca.pem")
-	// ServerCertFile defines the path to Server certificate
+
+	// ServerCertFile defines the path to the Server certificate
 	ServerCertFile = configFile("server.pem")
-	// ServerKeyFile defines the path to Server private key
+	// ServerKeyFile defines the path to the Server private key
 	ServerKeyFile = configFile("server-key.pem")
+
+	// ClientCertFile defines the path to the Client certificate
+	ClientCertFile = configFile("client.pem")
+	// ClientKeyFile defines the path to the Client private key
+	ClientKeyFile = configFile("client-key.pem")
 )
 
 const (
