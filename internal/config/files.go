@@ -14,10 +14,19 @@ var (
 	// ServerKeyFile defines the path to the Server private key
 	ServerKeyFile = configFile("server-key.pem")
 
-	// ClientCertFile defines the path to the Client certificate
-	ClientCertFile = configFile("client.pem")
-	// ClientKeyFile defines the path to the Client private key
-	ClientKeyFile = configFile("client-key.pem")
+	// RootClientCertFile defines the path to the Client certificate
+	// with 'root' level access
+	RootClientCertFile = configFile("root-client.pem")
+	// RootClientKeyFile defines the path to the Client private key
+	// with 'root' level access
+	RootClientKeyFile = configFile("root-client-key.pem")
+
+	// NobodyClientCertFile defines the path to the Client certificate
+	// with 'nobody' level access
+	NobodyClientCertFile = configFile("nobody-client.pem")
+	// NobodyClientKeyFile defines the path to the Client private key
+	// with 'nobody' level access
+	NobodyClientKeyFile = configFile("nobody-client-key.pem")
 )
 
 const (

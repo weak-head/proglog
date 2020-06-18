@@ -3,6 +3,7 @@ module github.com/weak-head/proglog
 go 1.14
 
 require (
+	github.com/casbin/casbin v1.9.1
 	github.com/cloudflare/cfssl v1.4.1 // indirect
 	github.com/gogo/protobuf v1.3.1
 	github.com/gorilla/mux v1.7.4

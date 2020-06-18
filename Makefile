@@ -23,13 +23,23 @@ gencert: init clean
 		-profile=server \
 		test/server-csr.json | cfssljson -bare server
 
-	# Generate client certificate
+	# Generate root client certificate
 	cfssl gencert \
 		-ca=ca.pem \
 		-ca-key=ca-key.pem \
 		-config=test/ca-config.json \
 		-profile=client \
-		test/client-csr.json | cfssljson -bare client
+		-cn="root" \
+		test/client-csr.json | cfssljson -bare root-client
+
+	# Generate nobody client certificate
+	cfssl gencert \
+		-ca=ca.pem \
+		-ca-key=ca-key.pem \
+		-config=test/ca-config.json \
+		-profile=client \
+		-cn="nobody" \
+		test/client-csr.json | cfssljson -bare nobody-client
 
 	mv *.pem *.csr ${CONFIG_PATH}
 

@@ -27,15 +27,16 @@ func TestServer(t *testing.T) {
 		"consume past log boundary fails":                    testConsumePastBoundary,
 	} {
 		t.Run(scenario, func(t *testing.T) {
-			client, config, teardown := testSetup(t, nil)
+			rootClient, _, config, teardown := testSetup(t, nil)
 			defer teardown()
-			fn(t, client, config)
+			fn(t, rootClient, config)
 		})
 	}
 }
 
 func testSetup(t *testing.T, fn func(*Config)) (
-	client api.LogClient,
+	rootClient api.LogClient,
+	nobodyClient api.LogClient,
 	cfg *Config,
 	teardown func(),
 ) {
@@ -44,23 +45,44 @@ func testSetup(t *testing.T, fn func(*Config)) (
 	l, err := net.Listen("tcp", "127.0.0.1:0")
 	require.NoError(t, err)
 
-	// Configure Client TLS
-	clientTLSConfig, err := config.SetupTLSConfig(
-		config.TLSConfig{
-			CertFile: config.ClientCertFile,
-			KeyFile:  config.ClientKeyFile,
-			CAFile:   config.CAFile,
-		})
-	require.NoError(t, err)
+	// Client generator
+	newClient := func(crtPath, keyPath string) (
+		*grpc.ClientConn,
+		api.LogClient,
+		[]grpc.DialOption,
+	) {
+		// Configure Client TLS
+		clientTLSConfig, err := config.SetupTLSConfig(
+			config.TLSConfig{
+				CertFile: crtPath,
+				KeyFile:  keyPath,
+				CAFile:   config.CAFile,
+				Server:   false,
+			})
+		require.NoError(t, err)
 
-	clientCreds := credentials.NewTLS(clientTLSConfig)
-	cc, err := grpc.Dial(
-		l.Addr().String(),
-		grpc.WithTransportCredentials(clientCreds),
+		clientCreds := credentials.NewTLS(clientTLSConfig)
+		opts := []grpc.DialOption{grpc.WithTransportCredentials(clientCreds)}
+		cc, err := grpc.Dial(
+			l.Addr().String(),
+			opts...,
+		)
+		require.NoError(t, err)
+
+		client := api.NewLogClient(cc)
+		return cc, client, opts
+	}
+
+	// Create 'root' and 'nobody' level access clients
+	rootConn, rootClient, _ := newClient(
+		config.RootClientCertFile,
+		config.RootClientKeyFile,
 	)
-	require.NoError(t, err)
 
-	client = api.NewLogClient(cc)
+	nobodyConn, nobodyClient, _ := newClient(
+		config.NobodyClientCertFile,
+		config.NobodyClientKeyFile,
+	)
 
 	// Configure Server TLS
 	serverTLSConfig, err := config.SetupTLSConfig(config.TLSConfig{
@@ -95,9 +117,10 @@ func testSetup(t *testing.T, fn func(*Config)) (
 		server.Serve(l)
 	}()
 
-	return client, cfg, func() {
+	return rootClient, nobodyClient, cfg, func() {
 		server.Stop()
-		cc.Close()
+		rootConn.Close()
+		nobodyConn.Close()
 		l.Close()
 	}
 }
