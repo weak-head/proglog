@@ -4,11 +4,13 @@ CONFIG_PATH=${HOME}/.proglog/
 init:
 	mkdir -p ${CONFIG_PATH}
 
-.PHONY: gencert
-gencert: init
+.PHONY: clean
+clean:
 	# Delete old certificates
 	rm -f ${CONFIG_PATH}/*.csr ${CONFIG_PATH}/*.pem
 
+.PHONY: gencert
+gencert: init clean
 	# Generate root CA
 	cfssl gencert \
 		-initca test/ca-csr.json | cfssljson -bare ca
@@ -38,7 +40,7 @@ compile:
 		--proto_path=.
 
 .PHONY: test
-test:
+test: gencert
 	echo "" > coverage.txt
 	for d in `go list ./...`; do \
 		go test -p 1 -v -timeout 240s -race -coverprofile=profile.out -covermode=atomic $$d || exit 1; \
