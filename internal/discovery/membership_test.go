@@ -46,7 +46,7 @@ func TestMembership(t *testing.T) {
 		250*time.Millisecond,
 	)
 
-	//
+	// 2nd node should leave the cluster
 	require.Equal(t, fmt.Sprintf("%d", 2), <-handler.leaves)
 }
 
