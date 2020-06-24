@@ -13,6 +13,7 @@ import (
 	"github.com/gogo/protobuf/proto"
 	"github.com/hashicorp/raft"
 	raftboltdb "github.com/hashicorp/raft-boltdb"
+
 	api "github.com/weak-head/proglog/api/v1"
 )
 
@@ -457,4 +458,70 @@ func (s *StreamLayer) Close() error {
 
 func (s *StreamLayer) Addr() net.Addr {
 	return s.ln.Addr()
+}
+
+// Join is called when a new node joins the Serf cluster
+func (l *DistributedLog) Join(id, addr string) error {
+	configFuture := l.raft.GetConfiguration()
+	if err := configFuture.Error(); err != nil {
+		return err
+	}
+
+	serverID := raft.ServerID(id)
+	serverAddr := raft.ServerAddress(addr)
+	for _, srv := range configFuture.Configuration().Servers {
+		if srv.ID == serverID || srv.Address == serverAddr {
+			if srv.ID == serverID && srv.Address == serverAddr {
+				// server has already joined
+				return nil
+			}
+
+			// remove the existing server
+			removeFuture := l.raft.RemoveServer(serverID, 0, 0)
+			if err := removeFuture.Error(); err != nil {
+				return err
+			}
+		}
+	}
+
+	addFuture := l.raft.AddVoter(serverID, serverAddr, 0, 0)
+	if err := addFuture.Error(); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// Leave is called when a node leaves the Serf cluster
+func (l *DistributedLog) Leave(id string) error {
+	removeFuture := l.raft.RemoveServer(raft.ServerID(id), 0, 0)
+	return removeFuture.Error()
+}
+
+// WaitForLeader blocks until the cluster has elected a leader or times out
+func (l *DistributedLog) WaitForLeader(timeout time.Duration) error {
+	timeoutc := time.After(timeout)
+	ticker := time.NewTicker(time.Second)
+	defer ticker.Stop()
+
+	for {
+		select {
+		case <-timeoutc:
+			return fmt.Errorf("timed out")
+		case <-ticker.C:
+			if l := l.raft.Leader(); l != "" {
+				return nil
+			}
+		}
+	}
+}
+
+// Close shuts down the Raft instance and closes the local log
+func (l *DistributedLog) Close() error {
+	f := l.raft.Shutdown()
+	if err := f.Error(); err != nil {
+		return err
+	}
+
+	return l.log.Close()
 }
