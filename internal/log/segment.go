@@ -82,7 +82,7 @@ func (s *segment) Read(off uint64) (*api.Record, error) {
 		return nil, err
 	}
 
-	p, err := s.store.ReadAt(pos)
+	p, err := s.store.Read(pos)
 	if err != nil {
 		return nil, err
 	}

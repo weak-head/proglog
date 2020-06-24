@@ -8,6 +8,8 @@ require (
 	github.com/gogo/protobuf v1.3.1
 	github.com/gorilla/mux v1.7.4
 	github.com/grpc-ecosystem/go-grpc-middleware v1.2.0
+	github.com/hashicorp/raft v1.1.2
+	github.com/hashicorp/raft-boltdb v0.0.0-20171010151810-6e5ba93211ea
 	github.com/hashicorp/serf v0.9.2
 	github.com/stretchr/testify v1.6.1
 	github.com/travisjeffery/go-dynaport v1.0.0
