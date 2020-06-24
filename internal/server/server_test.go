@@ -229,7 +229,7 @@ func testConsumePastBoundary(
 	}
 
 	got := grpc.Code(err)
-	want := grpc.Code((&api.ErrOffsetOutOfRange{}).GRPCStatus().Err())
+	want := grpc.Code((api.ErrOffsetOutOfRange{}).GRPCStatus().Err())
 	if got != want {
 		t.Fatalf("got err: %v, want: %v", got, want)
 	}

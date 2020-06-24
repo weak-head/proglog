@@ -147,7 +147,7 @@ func (s *grpcServer) ConsumeStream(
 
 			switch err.(type) {
 			case nil:
-			case *api.ErrOffsetOutOfRange:
+			case api.ErrOffsetOutOfRange:
 				continue
 			default:
 				return err
