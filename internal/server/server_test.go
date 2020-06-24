@@ -202,7 +202,7 @@ func testProduceConsumeStream(
 		for _, record := range records {
 			res, err := stream.Recv()
 			require.NoError(t, err)
-			require.Equal(t, res.Record, record)
+			require.Equal(t, res.Record.Value, record.Value)
 		}
 
 	}

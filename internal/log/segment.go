@@ -37,7 +37,7 @@ func newSegment(dir string, baseOffset uint64, c Config) (*segment, error) {
 
 	indexFile, err := os.OpenFile(
 		path.Join(dir, fmt.Sprintf("%d%s", baseOffset, ".index")),
-		os.O_RDWR|os.O_CREATE|os.O_APPEND,
+		os.O_RDWR|os.O_CREATE,
 		0644,
 	)
 	if err != nil {
@@ -57,6 +57,9 @@ func newSegment(dir string, baseOffset uint64, c Config) (*segment, error) {
 }
 
 func (s *segment) Append(record *api.Record) (offset uint64, err error) {
+	cur := s.nextOffset
+	record.Offset = cur
+
 	p, err := proto.Marshal(record)
 	if err != nil {
 		return 0, err
@@ -67,11 +70,13 @@ func (s *segment) Append(record *api.Record) (offset uint64, err error) {
 		return 0, err
 	}
 
-	if err = s.index.Write(uint32(s.nextOffset-s.baseOffset), pos); err != nil {
+	if err = s.index.Write(
+		uint32(s.nextOffset-uint64(s.baseOffset)),
+		pos,
+	); err != nil {
 		return 0, err
 	}
 
-	cur := s.nextOffset
 	s.nextOffset++
 	return cur, nil
 }

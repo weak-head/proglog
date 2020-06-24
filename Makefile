@@ -84,7 +84,6 @@ test: gencert copy_acl
 			-p 1 \
 			-v \
 			-timeout 240s \
-			-race \
 			-coverprofile=${TEST_COVERAGE_TEMP} \
 			-covermode=atomic \
 			$$d || exit 1; \
@@ -96,4 +95,4 @@ test: gencert copy_acl
 
 .PHONY: test_no_cov
 test_no_cov:
-	go test -race ./...
+	go test ./...

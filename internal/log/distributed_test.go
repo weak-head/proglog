@@ -108,7 +108,7 @@ func TestMultipleNodes(t *testing.T) {
 	time.Sleep(50 * time.Millisecond)
 
 	record, err := logs[1].Read(off)
-	require.IsType(t, api.ErrOffsetOutOfRange{}, err)
+	require.IsType(t, &api.ErrOffsetOutOfRange{}, err)
 	require.Nil(t, record)
 
 	record, err = logs[2].Read(off)
