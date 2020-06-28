@@ -286,38 +286,197 @@ func (m *ConsumeResponse) GetRecord() *Record {
 	return nil
 }
 
+type GetServersRequest struct {
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *GetServersRequest) Reset()         { *m = GetServersRequest{} }
+func (m *GetServersRequest) String() string { return proto.CompactTextString(m) }
+func (*GetServersRequest) ProtoMessage()    {}
+func (*GetServersRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_19a5c3fde3f7ae80, []int{5}
+}
+func (m *GetServersRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *GetServersRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_GetServersRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *GetServersRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetServersRequest.Merge(m, src)
+}
+func (m *GetServersRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *GetServersRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetServersRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetServersRequest proto.InternalMessageInfo
+
+type GetServersResponse struct {
+	Servers              []*Server `protobuf:"bytes,1,rep,name=servers,proto3" json:"servers,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}  `json:"-"`
+	XXX_unrecognized     []byte    `json:"-"`
+	XXX_sizecache        int32     `json:"-"`
+}
+
+func (m *GetServersResponse) Reset()         { *m = GetServersResponse{} }
+func (m *GetServersResponse) String() string { return proto.CompactTextString(m) }
+func (*GetServersResponse) ProtoMessage()    {}
+func (*GetServersResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_19a5c3fde3f7ae80, []int{6}
+}
+func (m *GetServersResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *GetServersResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_GetServersResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *GetServersResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetServersResponse.Merge(m, src)
+}
+func (m *GetServersResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *GetServersResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetServersResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetServersResponse proto.InternalMessageInfo
+
+func (m *GetServersResponse) GetServers() []*Server {
+	if m != nil {
+		return m.Servers
+	}
+	return nil
+}
+
+type Server struct {
+	Id                   string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	RpcAddr              string   `protobuf:"bytes,2,opt,name=rpc_addr,json=rpcAddr,proto3" json:"rpc_addr,omitempty"`
+	IsLeader             bool     `protobuf:"varint,3,opt,name=is_leader,json=isLeader,proto3" json:"is_leader,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *Server) Reset()         { *m = Server{} }
+func (m *Server) String() string { return proto.CompactTextString(m) }
+func (*Server) ProtoMessage()    {}
+func (*Server) Descriptor() ([]byte, []int) {
+	return fileDescriptor_19a5c3fde3f7ae80, []int{7}
+}
+func (m *Server) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *Server) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_Server.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *Server) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Server.Merge(m, src)
+}
+func (m *Server) XXX_Size() int {
+	return m.Size()
+}
+func (m *Server) XXX_DiscardUnknown() {
+	xxx_messageInfo_Server.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Server proto.InternalMessageInfo
+
+func (m *Server) GetId() string {
+	if m != nil {
+		return m.Id
+	}
+	return ""
+}
+
+func (m *Server) GetRpcAddr() string {
+	if m != nil {
+		return m.RpcAddr
+	}
+	return ""
+}
+
+func (m *Server) GetIsLeader() bool {
+	if m != nil {
+		return m.IsLeader
+	}
+	return false
+}
+
 func init() {
 	proto.RegisterType((*Record)(nil), "log.v1.Record")
 	proto.RegisterType((*ProduceRequest)(nil), "log.v1.ProduceRequest")
 	proto.RegisterType((*ProduceResponse)(nil), "log.v1.ProduceResponse")
 	proto.RegisterType((*ConsumeRequest)(nil), "log.v1.ConsumeRequest")
 	proto.RegisterType((*ConsumeResponse)(nil), "log.v1.ConsumeResponse")
+	proto.RegisterType((*GetServersRequest)(nil), "log.v1.GetServersRequest")
+	proto.RegisterType((*GetServersResponse)(nil), "log.v1.GetServersResponse")
+	proto.RegisterType((*Server)(nil), "log.v1.Server")
 }
 
 func init() { proto.RegisterFile("api/v1/log.proto", fileDescriptor_19a5c3fde3f7ae80) }
 
 var fileDescriptor_19a5c3fde3f7ae80 = []byte{
-	// 313 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x92, 0xcd, 0x4a, 0xc3, 0x40,
-	0x14, 0x85, 0x3b, 0x6d, 0x8d, 0x70, 0x6d, 0x53, 0x19, 0x4a, 0x0d, 0x5d, 0x84, 0x30, 0x0b, 0x89,
-	0x9b, 0xa4, 0xad, 0x1b, 0x05, 0x57, 0x2a, 0xae, 0x5c, 0xc8, 0xb8, 0x17, 0x62, 0x3b, 0x0d, 0x42,
-	0xd3, 0x1b, 0x27, 0x3f, 0xe0, 0x53, 0xf8, 0x5a, 0x2e, 0x7d, 0x04, 0xc9, 0x93, 0x48, 0x26, 0x63,
-	0xd2, 0x56, 0x14, 0x71, 0x77, 0xe6, 0xcc, 0x3d, 0xf7, 0x7c, 0x03, 0x03, 0x87, 0x41, 0xfc, 0xe4,
-	0xe7, 0x53, 0x7f, 0x85, 0xa1, 0x17, 0x4b, 0x4c, 0x91, 0x1a, 0xa5, 0xcc, 0xa7, 0xe3, 0x61, 0x88,
-	0x21, 0x2a, 0xcb, 0x2f, 0x55, 0x75, 0xcb, 0x1e, 0xc0, 0xe0, 0x62, 0x8e, 0x72, 0x41, 0x87, 0xb0,
-	0x97, 0x07, 0xab, 0x4c, 0x58, 0xc4, 0x21, 0x6e, 0x8f, 0x57, 0x07, 0x3a, 0x02, 0x03, 0x97, 0xcb,
-	0x44, 0xa4, 0x56, 0xdb, 0x21, 0x6e, 0x97, 0xeb, 0x13, 0xa5, 0xd0, 0x4d, 0x85, 0x8c, 0xac, 0x8e,
-	0x72, 0x95, 0x56, 0xde, 0x4b, 0x2c, 0xac, 0xae, 0x43, 0xdc, 0x3e, 0x57, 0x9a, 0x9d, 0x81, 0x79,
-	0x27, 0x71, 0x91, 0xcd, 0x05, 0x17, 0xcf, 0x99, 0x48, 0x52, 0x7a, 0x0c, 0x86, 0x54, 0x8d, 0xaa,
-	0xe8, 0x60, 0x66, 0x7a, 0x15, 0xa0, 0x57, 0x71, 0x70, 0x7d, 0xcb, 0x4e, 0x60, 0x50, 0x27, 0x93,
-	0x18, 0xd7, 0xc9, 0x26, 0x0c, 0xd9, 0x84, 0x61, 0x2e, 0x98, 0x57, 0xb8, 0x4e, 0xb2, 0xa8, 0x2e,
-	0xf9, 0x69, 0xf2, 0x1c, 0x06, 0xf5, 0xa4, 0x5e, 0xda, 0xf0, 0xb4, 0x7f, 0xe3, 0x99, 0xbd, 0xb6,
-	0xa1, 0x73, 0x8b, 0x21, 0xbd, 0x80, 0x7d, 0xcd, 0x45, 0x47, 0x5f, 0xa3, 0xdb, 0x4f, 0x1c, 0x1f,
-	0x7d, 0xf3, 0xab, 0x2e, 0xd6, 0x2a, 0xd3, 0x1a, 0xa0, 0x49, 0x6f, 0xb3, 0x37, 0xe9, 0x1d, 0x52,
-	0xd6, 0xa2, 0xd7, 0xd0, 0xd7, 0xe6, 0x7d, 0x2a, 0x45, 0x10, 0xfd, 0x63, 0xc7, 0x84, 0xd0, 0x1b,
-	0xe8, 0x6b, 0xb0, 0xdd, 0x2d, 0x7f, 0x7e, 0x87, 0x4b, 0x26, 0xe4, 0xb2, 0xf7, 0x56, 0xd8, 0xe4,
-	0xbd, 0xb0, 0xc9, 0x47, 0x61, 0x93, 0x47, 0x43, 0x7d, 0xa8, 0xd3, 0xcf, 0x00, 0x00, 0x00, 0xff,
-	0xff, 0x49, 0xb4, 0x05, 0xa8, 0x82, 0x02, 0x00, 0x00,
+	// 419 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x53, 0x4d, 0x6f, 0xd3, 0x40,
+	0x10, 0xed, 0x3a, 0xc1, 0x49, 0x86, 0xc6, 0x85, 0xa1, 0x2a, 0xae, 0x91, 0x22, 0x6b, 0x0f, 0xc8,
+	0x5c, 0x92, 0xb6, 0x5c, 0x40, 0x42, 0x48, 0x7c, 0x5f, 0x7a, 0xa8, 0xb6, 0x77, 0x2a, 0xe3, 0xdd,
+	0x5a, 0x96, 0x92, 0xae, 0xd9, 0xb5, 0x2d, 0xf1, 0x0f, 0x39, 0x72, 0xe2, 0x8c, 0xf2, 0x4b, 0x50,
+	0x76, 0xd7, 0xb1, 0xdb, 0x02, 0x42, 0xbd, 0xcd, 0xbe, 0x99, 0x79, 0xef, 0xf9, 0x8d, 0x0c, 0x0f,
+	0xd2, 0xb2, 0x58, 0x34, 0xc7, 0x8b, 0xa5, 0xcc, 0xe7, 0xa5, 0x92, 0x95, 0x44, 0x7f, 0x53, 0x36,
+	0xc7, 0xd1, 0x7e, 0x2e, 0x73, 0x69, 0xa0, 0xc5, 0xa6, 0xb2, 0x5d, 0xfa, 0x19, 0x7c, 0x26, 0x32,
+	0xa9, 0x38, 0xee, 0xc3, 0xbd, 0x26, 0x5d, 0xd6, 0x22, 0x24, 0x31, 0x49, 0x76, 0x99, 0x7d, 0xe0,
+	0x01, 0xf8, 0xf2, 0xf2, 0x52, 0x8b, 0x2a, 0xf4, 0x62, 0x92, 0x0c, 0x99, 0x7b, 0x21, 0xc2, 0xb0,
+	0x12, 0x6a, 0x15, 0x0e, 0x0c, 0x6a, 0x6a, 0x83, 0x7d, 0x2b, 0x45, 0x38, 0x8c, 0x49, 0x32, 0x65,
+	0xa6, 0xa6, 0x2f, 0x20, 0x38, 0x53, 0x92, 0xd7, 0x99, 0x60, 0xe2, 0x6b, 0x2d, 0x74, 0x85, 0x4f,
+	0xc1, 0x57, 0x46, 0xd1, 0x08, 0xdd, 0x3f, 0x09, 0xe6, 0xd6, 0xe0, 0xdc, 0xfa, 0x60, 0xae, 0x4b,
+	0x9f, 0xc1, 0xde, 0x76, 0x53, 0x97, 0xf2, 0x4a, 0xf7, 0xcd, 0x90, 0xbe, 0x19, 0x9a, 0x40, 0xf0,
+	0x4e, 0x5e, 0xe9, 0x7a, 0xb5, 0x15, 0xf9, 0xdb, 0xe4, 0x4b, 0xd8, 0xdb, 0x4e, 0x3a, 0xd2, 0xce,
+	0x8f, 0xf7, 0x4f, 0x3f, 0x8f, 0xe0, 0xe1, 0x27, 0x51, 0x9d, 0x0b, 0xd5, 0x08, 0xa5, 0x9d, 0x0e,
+	0x7d, 0x0d, 0xd8, 0x07, 0x1d, 0x65, 0x02, 0x23, 0x6d, 0xa1, 0x90, 0xc4, 0x83, 0x3e, 0xa7, 0x9d,
+	0x64, 0x6d, 0x9b, 0x9e, 0x81, 0x6f, 0x21, 0x0c, 0xc0, 0x2b, 0x6c, 0x24, 0x13, 0xe6, 0x15, 0x1c,
+	0x0f, 0x61, 0xac, 0xca, 0xec, 0x22, 0xe5, 0x5c, 0x19, 0x63, 0x13, 0x36, 0x52, 0x65, 0xf6, 0x86,
+	0x73, 0x85, 0x4f, 0x60, 0x52, 0xe8, 0x8b, 0xa5, 0x48, 0xb9, 0x50, 0xe6, 0x00, 0x63, 0x36, 0x2e,
+	0xf4, 0xa9, 0x79, 0x9f, 0xfc, 0xf4, 0x60, 0x70, 0x2a, 0x73, 0x7c, 0x05, 0x23, 0x17, 0x1f, 0x1e,
+	0xb4, 0xea, 0xd7, 0x2f, 0x11, 0x3d, 0xbe, 0x85, 0x5b, 0xff, 0x74, 0x67, 0xb3, 0xed, 0x72, 0xea,
+	0xb6, 0xaf, 0x47, 0xdc, 0x6d, 0xdf, 0x08, 0x94, 0xee, 0xe0, 0x7b, 0x98, 0x3a, 0xf0, 0xbc, 0x52,
+	0x22, 0x5d, 0xdd, 0x81, 0xe3, 0x88, 0xe0, 0x47, 0x98, 0x3a, 0x63, 0x37, 0x59, 0xfe, 0xfb, 0x3b,
+	0x12, 0x72, 0x44, 0xf0, 0x03, 0x40, 0x77, 0x23, 0x3c, 0x6c, 0x87, 0x6f, 0x1d, 0x33, 0x8a, 0xfe,
+	0xd4, 0x6a, 0xa9, 0xde, 0xee, 0x7e, 0x5f, 0xcf, 0xc8, 0x8f, 0xf5, 0x8c, 0xfc, 0x5a, 0xcf, 0xc8,
+	0x17, 0xdf, 0xfc, 0x3e, 0xcf, 0x7f, 0x07, 0x00, 0x00, 0xff, 0xff, 0x57, 0x44, 0xce, 0x65, 0x70,
+	0x03, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -336,6 +495,8 @@ type LogClient interface {
 	Consume(ctx context.Context, in *ConsumeRequest, opts ...grpc.CallOption) (*ConsumeResponse, error)
 	ConsumeStream(ctx context.Context, in *ConsumeRequest, opts ...grpc.CallOption) (Log_ConsumeStreamClient, error)
 	ProduceStream(ctx context.Context, opts ...grpc.CallOption) (Log_ProduceStreamClient, error)
+	// Service discovery
+	GetServers(ctx context.Context, in *GetServersRequest, opts ...grpc.CallOption) (*GetServersResponse, error)
 }
 
 type logClient struct {
@@ -427,12 +588,23 @@ func (x *logProduceStreamClient) Recv() (*ProduceResponse, error) {
 	return m, nil
 }
 
+func (c *logClient) GetServers(ctx context.Context, in *GetServersRequest, opts ...grpc.CallOption) (*GetServersResponse, error) {
+	out := new(GetServersResponse)
+	err := c.cc.Invoke(ctx, "/log.v1.Log/GetServers", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // LogServer is the server API for Log service.
 type LogServer interface {
 	Produce(context.Context, *ProduceRequest) (*ProduceResponse, error)
 	Consume(context.Context, *ConsumeRequest) (*ConsumeResponse, error)
 	ConsumeStream(*ConsumeRequest, Log_ConsumeStreamServer) error
 	ProduceStream(Log_ProduceStreamServer) error
+	// Service discovery
+	GetServers(context.Context, *GetServersRequest) (*GetServersResponse, error)
 }
 
 // UnimplementedLogServer can be embedded to have forward compatible implementations.
@@ -450,6 +622,9 @@ func (*UnimplementedLogServer) ConsumeStream(req *ConsumeRequest, srv Log_Consum
 }
 func (*UnimplementedLogServer) ProduceStream(srv Log_ProduceStreamServer) error {
 	return status.Errorf(codes.Unimplemented, "method ProduceStream not implemented")
+}
+func (*UnimplementedLogServer) GetServers(ctx context.Context, req *GetServersRequest) (*GetServersResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetServers not implemented")
 }
 
 func RegisterLogServer(s *grpc.Server, srv LogServer) {
@@ -539,6 +714,24 @@ func (x *logProduceStreamServer) Recv() (*ProduceRequest, error) {
 	return m, nil
 }
 
+func _Log_GetServers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetServersRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LogServer).GetServers(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/log.v1.Log/GetServers",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LogServer).GetServers(ctx, req.(*GetServersRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Log_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "log.v1.Log",
 	HandlerType: (*LogServer)(nil),
@@ -550,6 +743,10 @@ var _Log_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Consume",
 			Handler:    _Log_Consume_Handler,
+		},
+		{
+			MethodName: "GetServers",
+			Handler:    _Log_GetServers_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
@@ -759,6 +956,125 @@ func (m *ConsumeResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+func (m *GetServersRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *GetServersRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *GetServersRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.XXX_unrecognized != nil {
+		i -= len(m.XXX_unrecognized)
+		copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *GetServersResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *GetServersResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *GetServersResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.XXX_unrecognized != nil {
+		i -= len(m.XXX_unrecognized)
+		copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	if len(m.Servers) > 0 {
+		for iNdEx := len(m.Servers) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Servers[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintLog(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *Server) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Server) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *Server) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.XXX_unrecognized != nil {
+		i -= len(m.XXX_unrecognized)
+		copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	if m.IsLeader {
+		i--
+		if m.IsLeader {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x18
+	}
+	if len(m.RpcAddr) > 0 {
+		i -= len(m.RpcAddr)
+		copy(dAtA[i:], m.RpcAddr)
+		i = encodeVarintLog(dAtA, i, uint64(len(m.RpcAddr)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Id) > 0 {
+		i -= len(m.Id)
+		copy(dAtA[i:], m.Id)
+		i = encodeVarintLog(dAtA, i, uint64(len(m.Id)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintLog(dAtA []byte, offset int, v uint64) int {
 	offset -= sovLog(v)
 	base := offset
@@ -850,6 +1166,59 @@ func (m *ConsumeResponse) Size() (n int) {
 	if m.Record != nil {
 		l = m.Record.Size()
 		n += 1 + l + sovLog(uint64(l))
+	}
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
+func (m *GetServersRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
+func (m *GetServersResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.Servers) > 0 {
+		for _, e := range m.Servers {
+			l = e.Size()
+			n += 1 + l + sovLog(uint64(l))
+		}
+	}
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
+func (m *Server) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Id)
+	if l > 0 {
+		n += 1 + l + sovLog(uint64(l))
+	}
+	l = len(m.RpcAddr)
+	if l > 0 {
+		n += 1 + l + sovLog(uint64(l))
+	}
+	if m.IsLeader {
+		n += 2
 	}
 	if m.XXX_unrecognized != nil {
 		n += len(m.XXX_unrecognized)
@@ -1309,6 +1678,286 @@ func (m *ConsumeResponse) Unmarshal(dAtA []byte) error {
 				return err
 			}
 			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipLog(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthLog
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthLog
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *GetServersRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowLog
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: GetServersRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: GetServersRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipLog(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthLog
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthLog
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *GetServersResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowLog
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: GetServersResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: GetServersResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Servers", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowLog
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthLog
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthLog
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Servers = append(m.Servers, &Server{})
+			if err := m.Servers[len(m.Servers)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipLog(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthLog
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthLog
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *Server) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowLog
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: Server: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: Server: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Id", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowLog
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthLog
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthLog
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Id = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field RpcAddr", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowLog
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthLog
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthLog
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.RpcAddr = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field IsLeader", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowLog
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.IsLeader = bool(v != 0)
 		default:
 			iNdEx = preIndex
 			skippy, err := skipLog(dAtA[iNdEx:])
