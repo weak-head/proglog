@@ -13,7 +13,7 @@ before_install:
 install: make install_dependencies
 
 script:
-- make test
+- make coverage
 
 after_success:
 - bash <(curl -s https://codecov.io/bash)

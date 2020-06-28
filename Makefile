@@ -75,8 +75,8 @@ compile:
 		--proto_path=$$(go list -f '{{ .Dir }}' -m github.com/gogo/protobuf) \
 		--proto_path=.
 
-.PHONY: test
-test: gencert copy_acl
+.PHONY: coverage
+coverage: gencert copy_acl
 	# Run tests generating coverage report
 	echo "" > ${TEST_COVERAGE}
 	for d in `go list ./...`; do \
@@ -93,6 +93,6 @@ test: gencert copy_acl
 		fi \
 	done
 
-.PHONY: test_no_cov
-test_no_cov:
+.PHONY: test
+test: gencert copy_acl
 	go test ./...
