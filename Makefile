@@ -1,3 +1,5 @@
+TAG ?= 0.0.1
+
 CONFIG_PATH=${HOME}/.proglog/
 
 ACL_MODEL=acl-model.conf
@@ -28,8 +30,8 @@ install_dependencies: get
 	go get github.com/cloudflare/cfssl/cmd/cfssl
 	go get github.com/cloudflare/cfssl/cmd/cfssljson
 
-.PHONY: copy_acl
-copy_acl: init clean
+.PHONY: copy-acl
+copy-acl: init clean
 	# Copy ACL model and policy
 	cp test/${ACL_MODEL} ${CONFIG_PATH}/${ACL_MODEL}
 	cp test/${ACL_POLICY} ${CONFIG_PATH}/${ACL_POLICY}
@@ -76,7 +78,7 @@ compile:
 		--proto_path=.
 
 .PHONY: coverage
-coverage: gencert copy_acl
+coverage: gencert copy-acl
 	# Run tests generating coverage report
 	echo "" > ${TEST_COVERAGE}
 	for d in `go list ./...`; do \
@@ -94,5 +96,9 @@ coverage: gencert copy_acl
 	done
 
 .PHONY: test
-test: gencert copy_acl
+test: gencert copy-acl
 	go test ./...
+
+.PHONY: build-docker
+build-docker:
+	docker build -t github.com/weak-head/proglog:$(TAG) .
