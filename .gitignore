@@ -1,3 +1,6 @@
+# VS Code
+.vscode
+
 # Test output
 coverage.txt
 profile.out

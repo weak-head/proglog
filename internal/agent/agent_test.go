@@ -16,6 +16,7 @@ import (
 
 	api "github.com/weak-head/proglog/api/v1"
 	"github.com/weak-head/proglog/internal/config"
+	"github.com/weak-head/proglog/internal/loadbalance"
 )
 
 func TestAgent(t *testing.T) {
@@ -112,6 +113,8 @@ func TestAgent(t *testing.T) {
 	)
 	require.NoError(t, err)
 
+	time.Sleep(3 * time.Second)
+
 	consumeResponse, err := leaderClient.Consume(
 		context.Background(),
 		&api.ConsumeRequest{
@@ -119,7 +122,6 @@ func TestAgent(t *testing.T) {
 		},
 	)
 	require.NoError(t, err)
-
 	require.Equal(t, consumeResponse.Record.Value, []byte("foo"))
 
 	// Wait until the replication has finished
@@ -154,16 +156,25 @@ func client(
 	agent *Agent,
 	tlsConfig *tls.Config,
 ) api.LogClient {
+	// Client TLS config
 	tlsCreds := credentials.NewTLS(tlsConfig)
 	opts := []grpc.DialOption{grpc.WithTransportCredentials(tlsCreds)}
+
+	// gRPC server endpoint
 	rpcAddr, err := agent.Config.RPCAddr()
 	require.NoError(t, err)
 
+	// dial gRPC server with 'proglog' load balancer
 	conn, err := grpc.Dial(
-		fmt.Sprintf("%s", rpcAddr),
+		fmt.Sprintf(
+			"%s:///%s",
+			loadbalance.Name,
+			rpcAddr,
+		),
 		opts...,
 	)
 	require.NoError(t, err)
 
+	// Create new Log client
 	return api.NewLogClient(conn)
 }
