@@ -1,4 +1,5 @@
-TAG ?= 0.0.1
+IMAGE_ID ?= github.com/weak-head/proglog
+IMAGE_TAG ?= 0.0.1
 
 CONFIG_PATH=${HOME}/.proglog/
 
@@ -101,4 +102,16 @@ test: gencert copy-acl
 
 .PHONY: build-docker
 build-docker:
-	docker build -t github.com/weak-head/proglog:$(TAG) .
+	docker build -t $(IMAGE_ID):$(IMAGE_TAG) .
+
+.PHONY: clean-deploy
+clean-deploy:
+	helm uninstall proglog
+	kind delete cluster
+
+.PHONY: deploy
+deploy: build-docker
+	kind create cluster
+	kind load docker-image $(IMAGE_ID):$(IMAGE_TAG)
+	helm install proglog deploy/proglog
+	
