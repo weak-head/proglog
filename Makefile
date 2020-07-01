@@ -114,4 +114,5 @@ deploy: build-docker
 	kind create cluster
 	kind load docker-image $(IMAGE_ID):$(IMAGE_TAG)
 	helm install proglog deploy/proglog
+	# kubectl port-forward pod/proglog-0 8400 8400
 	
