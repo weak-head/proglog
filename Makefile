@@ -28,6 +28,7 @@ get:
 
 .PHONY: install_dependencies
 install_dependencies: get
+	go get github.com/gogo/protobuf
 	go get github.com/cloudflare/cfssl/cmd/cfssl
 	go get github.com/cloudflare/cfssl/cmd/cfssljson
 
