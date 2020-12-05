@@ -29,8 +29,12 @@ get:
 .PHONY: install_dependencies
 install_dependencies: get
 	go get github.com/gogo/protobuf
+	go get github.com/gogo/protobuf/protoc-gen-gogo
 	go get github.com/cloudflare/cfssl/cmd/cfssl
 	go get github.com/cloudflare/cfssl/cmd/cfssljson
+	# go get github.com/gogo/protobuf/proto
+	# go get github.com/gogo/protobuf/jsonpb
+	# go get github.com/gogo/protobuf/gogoproto
 
 .PHONY: copy-acl
 copy-acl: init clean
