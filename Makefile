@@ -32,6 +32,7 @@ install_dependencies: get
 	go get github.com/gogo/protobuf/protoc-gen-gogo
 	go get github.com/cloudflare/cfssl/cmd/cfssl
 	go get github.com/cloudflare/cfssl/cmd/cfssljson
+	go get google.golang.org/grpc/internal/channelz
 	# go get github.com/gogo/protobuf/proto
 	# go get github.com/gogo/protobuf/jsonpb
 	# go get github.com/gogo/protobuf/gogoproto

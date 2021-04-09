@@ -1,11 +1,11 @@
 module github.com/weak-head/proglog
 
-go 1.14
+go 1.16
 
 require (
 	github.com/casbin/casbin v1.9.1
-	github.com/cloudflare/cfssl v1.4.1 // indirect
-	github.com/gogo/protobuf v1.3.1
+	github.com/cloudflare/cfssl v1.5.0 // indirect
+	github.com/gogo/protobuf v1.3.2
 	github.com/gorilla/mux v1.7.4
 	github.com/grpc-ecosystem/go-grpc-middleware v1.2.0
 	github.com/hashicorp/raft v1.1.2
@@ -17,6 +17,7 @@ require (
 	github.com/stretchr/testify v1.6.1
 	github.com/travisjeffery/go-dynaport v1.0.0
 	github.com/tysontate/gommap v0.0.0-20190103205956-899e1273fb5c
+	github.com/zmap/zlint v0.0.0-20190806154020-fd021b4cfbeb // indirect
 	google.golang.org/genproto v0.0.0-20200624020401-64a14ca9d1ad
 	google.golang.org/grpc v1.30.0
 )
